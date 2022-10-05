@@ -1,0 +1,251 @@
+{% load static %}
+{% load cart_template_tags %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Sun E-commerce</title>
+    <!-- CSS only -->
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <style>
+    .card-img
+    {
+      height: 270px !important;
+      width: 100%;
+      padding-top: 0rem;
+    }
+
+    .card-body{
+      height: 100px;
+    }
+
+    .item{
+      font-size: 15px;
+      padding: 10px;
+    }
+
+     
+    </style>
+  </head>
+  <body>
+        <nav class="navbar navbar-expand-lg">
+            
+          
+            <div class="container d-flex flex-wrap">
+                <!-- <button class="navbar-toggler navbar-brand" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button> -->
+   
+              <ul class="nav me-auto">
+                <li class="nav-item"><a href="{% url 'core:home' %}" class="nav-link link-dark px-2 active" aria-current="page">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="60" height="40" fill="currentColor" class="bi bi-columns-gap text-dark" viewBox="0 0 16 16">
+                        <path d="M6 1v3H1V1h5zM1 0a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1H1zm14 12v3h-5v-3h5zm-5-1a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1h-5zM6 8v7H1V8h5zM1 7a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1H1zm14-6v7h-5V1h5zm-5-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1h-5z"/>
+                      </svg>
+
+                </a></li>
+                <li class="nav-item"><a href="{% url 'core:home' %}" class="nav-link link-dark px-2 pt-3 active" aria-current="page"><strong>Home</strong></a></li>
+                {% if request.user.is_authenticated %}
+                <li class="nav-item"><a class="nav-link link-dark px-2 pt-3 active" aria-current="page"><strong>Welcome {{ request.user.first_name }}</strong></a></li>
+                {% endif %}
+                {% if request.user.is_admin %}
+                <li class="nav-item"><a href="{% url 'admin:index' %}" class="nav-link link-dark px-2 pt-3 active" aria-current="page"><strong>ADMIN</strong></a></li>
+                {% endif %}
+              </ul>
+              <ul class="nav"> 
+                {% if request.user.is_authenticated %}
+          
+                <li class="nav-item"><a href="{% url 'core:order_summary' %}" class="nav-link link-dark ">
+                  <span class="badge red z-depth-1 text-dark"> {{ request.user|cart_item_count }} </span>
+                  <span class="clearfix d-none d-sm-inline-block text-dark"> Cart </span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="60" height="30" fill="currentColor" class="bi bi-cart3 text-dark pb-1" viewBox="0 0 16 16">
+                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                    </svg>
+                    
+                </a></li>
+              
+                <a  href="{% url 'accounts:logout' %}">
+                  <li class="nav-item">
+                    <li class="nav-item"><button type="button" class="btn btn-outline-danger me-2 text-dark">Log-Out</button></li>
+                  </li>
+                </a>
+                {% else %}
+                <a  href="{% url 'accounts:login' %}">
+                  <li class="nav-item">
+                    <button type="button" class="btn btn-outline-success me-2 text-dark">Login</button>
+                  </li>
+                </a>
+                <a  href="{% url 'accounts:register' %}">
+                  <li class="nav-item">
+                    <li class="nav-item"><button type="button" class="btn btn-outline-success me-2 text-dark">Sign-up</button></li>
+                  </li>
+                </a>
+                {% endif %}
+                
+                
+              </ul>
+            </div>
+        </nav>
+          {% if messages %}
+          {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            </button>
+          </div>
+          {% endfor %}
+          {% endif %}
+          
+    <section>
+     <div class="nav pt-0 pb1">
+      <ul class="nav cat1">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle cat" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Categories
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark">
+            {% for obj in obj %}
+            <li><a class="dropdown-item" href="">{{obj.title}}</a></li>
+            {% endfor %}
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link cat" href="#">Top sellers</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link cat" href="#">New</a>
+        </li>
+        
+      </ul>
+      <ul class="nav right">
+        <form method="post" action="{% url 'core:search' %}" class="d-flex" role="search">
+          {% csrf_token %}
+          <!-- <input class="form-control me-2" type="search" name="search" placeholder="Search" aria-label="Search"> -->
+          {{ form.search }}
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      </ul>
+      
+     </div>
+    </section> 
+    <div class="container bg-success bg-opacity-10">
+      
+      <section class="text-center my-5">
+
+        <!--Grid row-->
+       
+        <div class="row wow fadeIn">
+        {% for item in item.all %}
+          <!--Grid column-->
+          <div class="col-lg-3 col-md-6 mb-4">
+    
+            <!--Card-->
+            <div class="card">
+    
+              <!--Card image-->
+              <div class="view overlay">
+                <a href="{{item.get_absolute_url}}">
+                  <img src="{{ item.imageURL }}" class="card-img-top card-img"
+                  alt="">
+
+                </a> 
+                
+                  <!-- <a href="{{item.get_absolute_url}}">
+                    <div class="mask rgba-white-slight"></div>
+                  </a> -->
+           
+              </div>
+              <!--Card image-->
+    
+              <!--Card content-->
+              <div class="card-body text-center text-dark">
+                <h5>
+                  <strong>
+                    <a href="{{ item.get_absolute_url }}" class="item">{{item.title}}
+                    </a>
+                    <hr class="line">
+                  </strong>
+                </h5>
+    
+                <h4 class="font-weight-bold style text-center">
+                  <strong>
+                    <a>
+                      {% if item.discount_price %}
+                      Shs.{{item.discount_price}}
+                    
+                    {% else %}
+                      Shs.{{item.price}}
+                    
+                    {% endif %}
+                    </a>
+                    
+    
+                  </strong>
+                </h4>
+    
+              </div>
+              <!--Card content-->
+    
+            </div>
+            <!--Card-->
+    
+          </div>
+        {% endfor %}
+        </div>
+       
+    </section>
+    
+       
+    </div>
+    {% if is_paginated %}
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.previous_page_number}}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        {% endif %}
+        <li class="page-item"><a class="page-link" href="#">{{page_obj.number}}</a></li>
+        {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.next_page_number}}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
+    <div class="container">
+        <footer class="py-3 my-4">
+          <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Home</a></li>
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Features</a></li>
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Pricing</a></li>
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">FAQs</a></li>
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">About</a></li>
+          </ul>
+          <p class="text-center text-muted">&copy; 2022 Company, Inc</p>
+        </footer>
+      </div>
+
+   
+
+        
+     
+    </div>
+  
+
+   
+      
+      <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+  </body>
+
+</html>
